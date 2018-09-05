@@ -16,13 +16,11 @@ public class PacMan extends ApplicationAdapter {
 
 	private GameStateManager gsm;
 	private SpriteBatch batch;
-	Texture img;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		gsm = new GameStateManager();
-		img = new Texture("badlogic.jpg");
         Gdx.gl.glClearColor(0, 0, 0, 1);
 
         //gsm.push(new MenuState(gsm));
@@ -41,6 +39,5 @@ public class PacMan extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
 	}
 }

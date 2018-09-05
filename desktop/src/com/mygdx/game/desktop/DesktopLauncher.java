@@ -9,7 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width = PacMan.WIDTH;
 		config.height = PacMan.HEIGHT;
-		config.title = "PacMan";
+		config.title = "PokéMan";
 		new LwjglApplication(new PacMan(), config);
 	}
 }
