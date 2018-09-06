@@ -10,6 +10,9 @@ public class MenuState extends State {
     private Texture background;
     private Music music;
 
+    //TODO: Remove the button
+    private Texture button;
+
     public MenuState(GameStateManager gsm) {
         super(gsm);
 
@@ -18,6 +21,8 @@ public class MenuState extends State {
         music.play();
 
         background = new Texture(Gdx.files.internal("backgrounds/pokeman.png"));
+
+        button = new Texture(Gdx.files.internal("buttons/start_up.png"));
     }
 
     @Override
@@ -34,6 +39,7 @@ public class MenuState extends State {
     public void render(SpriteBatch batch) {
         batch.begin();
             batch.draw(background,0,0);
+            batch.draw(button, 400 - button.getWidth()/2, 390);
         batch.end();
     }
 

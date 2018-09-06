@@ -9,7 +9,7 @@ import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuState;
 import com.mygdx.game.states.PlayState;
 
-public class PacMan extends ApplicationAdapter {
+public class Main extends ApplicationAdapter {
 
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 800;

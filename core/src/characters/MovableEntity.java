@@ -30,22 +30,22 @@ public abstract class MovableEntity {
         this.currentPosition = startPosition;
         switch (startDirection) {
             case NORTH:
-                    if(!(currentPosition.getY() <= 0)) {
-                        nextPosition  = new Pair(currentPosition.getX(), (currentPosition.getY() -1));
-                    } else {
-                        nextPosition = currentPosition;
-                    }
-                break;
-            case EAST:
-                if(!(currentPosition.getX() >= map.getTileWidth())) {
+                if(!(currentPosition.getY() >= map.getTileHeight())) {
                     nextPosition  = new Pair(currentPosition.getX(), currentPosition.getY() + 1);
                 } else {
                     nextPosition = currentPosition;
                 }
                 break;
+            case EAST:
+                if(!(currentPosition.getX() >= map.getAmountOfTilesX())) {
+                    nextPosition  = new Pair(currentPosition.getX() +1, currentPosition.getY());
+                } else {
+                    nextPosition = currentPosition;
+                }
+                break;
             case SOUTH:
-                if(!(currentPosition.getY() >= map.getTileHeight())) {
-                    nextPosition  = new Pair(currentPosition.getX(), currentPosition.getY() + 1);
+                if(!(currentPosition.getY() <= 0)) {
+                    nextPosition  = new Pair(currentPosition.getX(), (currentPosition.getY() -1));
                 } else {
                     nextPosition = currentPosition;
                 }
@@ -75,30 +75,27 @@ public abstract class MovableEntity {
 
             switch (currentDirection) {
                 case NORTH:
-                        float newY = position.y - (map.getTileHeight()/PlayState.stepsPerTile) * getSpeed();
+                    float newYNorth = position.y + (map.getTileHeight()/PlayState.stepsPerTile) * getSpeed();
 
-                        if (newY <= nextPosition.getY() * map.getTileHeight()) {
-                            newY = nextPosition.getY() * map.getTileHeight();
-                            position.y = newY;
+                    if (newYNorth >= nextPosition.getY() * map.getTileHeight()) {
+                        newYNorth = nextPosition.getY() * map.getTileHeight();
+                        position.y = newYNorth;
 
-                            // Determine new nextPosition;
-                            currentPosition = nextPosition;
-                            currentDirection = nextDirection;
-                            getNextPosition();
-                        }
-                        else {
-                            position.y = newY;
-                        }
+                        // Determine new nextPosition;
+                        currentPosition = nextPosition;
+                        currentDirection = nextDirection;
+                        getNextPosition();
+                    }
+                    else {
+                        position.y = newYNorth;
+                    }
                     break;
                 case EAST:
-                        position.x = position.x + (map.getTileWidth()/PlayState.stepsPerTile) * getSpeed();
-                    break;
-                case SOUTH:
-                        float newYSouth = position.y + (map.getTileHeight()/PlayState.stepsPerTile) * getSpeed();
+                        float newXEast = position.x + (map.getTileWidth()/PlayState.stepsPerTile) * getSpeed();
 
-                        if (newYSouth >= nextPosition.getY() * map.getTileHeight()) {
-                            newYSouth = nextPosition.getY() * map.getTileHeight();
-                            position.y = newYSouth;
+                        if (newXEast >= nextPosition.getX() * map.getTileWidth()) {
+                            newXEast = nextPosition.getX() * map.getTileWidth();
+                            position.x = newXEast;
 
                             // Determine new nextPosition;
                             currentPosition = nextPosition;
@@ -106,11 +103,40 @@ public abstract class MovableEntity {
                             getNextPosition();
                         }
                         else {
-                            position.y = newYSouth;
+                            position.x = newXEast;
                         }
                     break;
+                case SOUTH:
+                    float newY = position.y - (map.getTileHeight()/PlayState.stepsPerTile) * getSpeed();
+
+                    if (newY <= nextPosition.getY() * map.getTileHeight()) {
+                        newY = nextPosition.getY() * map.getTileHeight();
+                        position.y = newY;
+
+                        // Determine new nextPosition;
+                        currentPosition = nextPosition;
+                        currentDirection = nextDirection;
+                        getNextPosition();
+                    }
+                    else {
+                        position.y = newY;
+                    }
+                    break;
                 case WEST:
-                        position.x = position.x + (map.getTileWidth()/PlayState.stepsPerTile) * getSpeed();
+                    float newX = position.x - (map.getTileWidth()/PlayState.stepsPerTile) * getSpeed();
+
+                    if (newX <= nextPosition.getX() * map.getTileWidth()) {
+                        newX = nextPosition.getX() * map.getTileWidth();
+                        position.x = newX;
+
+                        // Determine new nextPosition;
+                        currentPosition = nextPosition;
+                        currentDirection = nextDirection;
+                        getNextPosition();
+                    }
+                    else {
+                        position.x = newX;
+                    }
                     break;
                 default:
                     break;
@@ -121,32 +147,31 @@ public abstract class MovableEntity {
     private void getNextPosition() {
         switch (currentDirection) {
             case NORTH:
-                if(!(currentPosition.getY() <= 0)) {
-                    nextPosition  = new Pair(currentPosition.getX(), (currentPosition.getY() -1));
+                if(!(currentPosition.getY() >= map.getAmountOfTilesY() -1)) {
+                    nextPosition.setY(nextPosition.getY() + 1);
                 } else {
                     nextPosition = currentPosition;
                 }
             default:
                 break;
             case EAST:
-                if(!(currentPosition.getX() >= map.getMapWidth())) {
-                    nextPosition  = new Pair(currentPosition.getX() + 1, currentPosition.getY());
+                if(!(currentPosition.getX() >= map.getAmountOfTilesX() -1)) {
+                    nextPosition.setX(currentPosition.getX() + 1);
                 } else {
                     nextPosition = currentPosition;
                 }
                 break;
             case SOUTH:
-                System.out.println(map.getAmountOfTilesY());
-                if(!(currentPosition.getY() >= map.getAmountOfTilesY() -1)) {
-                    nextPosition.setY(nextPosition.getY() + 1);
-                    //nextPosition  = new Pair(currentPosition.getX(), currentPosition.getY() + 1);
+                if(!(currentPosition.getY() <= 0)) {
+                    nextPosition  = new Pair(currentPosition.getX(), (currentPosition.getY() -1));
                 } else {
                     nextPosition = currentPosition;
                 }
+
                 break;
             case WEST:
                 if(!(currentPosition.getX() <= 0)) {
-                    nextPosition  = new Pair(currentPosition.getX() -1 , currentPosition.getY());
+                    nextPosition.setX(currentPosition.getX() - 1);
                 } else {
                     nextPosition = currentPosition;
                 }
